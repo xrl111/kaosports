@@ -7,46 +7,34 @@ import {
 } from '@refinedev/antd';
 import { BaseRecord } from '@refinedev/core';
 
-import { Space, Table, Tag, Avatar, Image } from 'antd';
+import { Space, Table, Tag, Avatar } from 'antd';
 
 export const UserList = () => {
   const { tableProps } = useTable({
     syncWithLocation: true,
   });
+
   return (
-    <List>
-      <Table {...tableProps}>
+    <List title={'Người dùng'}>
+      <Table {...tableProps} rowKey="id">
         <Table.Column dataIndex="id" title={'ID'} />
         <Table.Column
+          dataIndex="name"
           title={'Name'}
           render={(_, record: BaseRecord) => (
-            <span>{`${record.firstName} ${record.lastName}`}</span>
-          )}
-        />
-        <Table.Column dataIndex="email" title={'Email'} />
-        <Table.Column
-          dataIndex="skills"
-          title={'Skills'}
-          render={(_, record: BaseRecord) => (
             <Space>
-              {record.skills.map((skill: string) => (
-                <Tag key={skill}>{skill}</Tag>
-              ))}
+              {record?.avatar ? (
+                <Avatar src={record.avatar} />
+              ) : (
+                <Avatar src="https://i.pravatar.cc/300" />
+              )}
+              {record.name}
             </Space>
           )}
         />
-        <Table.Column
-          dataIndex="avatar"
-          title={'Avatar'}
-          render={(_, record: BaseRecord) =>
-            record?.url ? (
-              <Image src={record?.url} width={50} height={50} />
-            ) : (
-              <Image src="https://i.pravatar.cc/300" width={50} height={50} />
-            )
-          }
-        />
-        <Table.Column dataIndex="birthday" title={'birthday'} />
+        <Table.Column dataIndex="email" title={'Email'} />
+        <Table.Column dataIndex="address" title={'Address'} />
+        <Table.Column dataIndex="phone" title={'Phone'} />
         <Table.Column
           dataIndex="status"
           title={'Status'}
@@ -62,8 +50,17 @@ export const UserList = () => {
           render={(_, record: BaseRecord) => (
             <Space>
               <EditButton hideText size="small" recordItemId={record.id} />
-              <ShowButton hideText size="small" recordItemId={record.id} />
-              <DeleteButton hideText size="small" recordItemId={record.id} />
+              {/* <ShowButton hideText size="small" recordItemId={record.id} /> */}
+              {record.status === true ? (
+                <DeleteButton hideText size="small" recordItemId={record.id} />
+              ) : (
+                <DeleteButton
+                  hideText
+                  size="small"
+                  disabled
+                  recordItemId={record.id}
+                />
+              )}
             </Space>
           )}
         />

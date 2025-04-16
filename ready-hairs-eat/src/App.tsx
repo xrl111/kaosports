@@ -16,63 +16,32 @@ import routerBindings, {
   NavigateToResource,
   UnsavedChangesNotifier,
 } from '@refinedev/react-router';
-import dataProvider from '@refinedev/simple-rest';
+import { dataProvider } from './providers/dataProvider';
 import { App as AntdApp } from 'antd';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router';
-import { authProvider } from './authProvider';
+import { authProvider } from './providers/authProvider';
 import { Header } from './components/header';
 import { ColorModeContextProvider } from './contexts/color-mode';
-import {
-  BlogPostCreate,
-  BlogPostEdit,
-  BlogPostList,
-  BlogPostShow,
-} from './pages/blog-posts';
-import {
-  CategoryCreate,
-  CategoryEdit,
-  CategoryList,
-  CategoryShow,
-} from './pages/categories';
 import { ForgotPassword } from './pages/forgotPassword';
 import { Login } from './pages/login';
 import { Register } from './pages/register';
-import { UserList, UserCreate, UserEdit, UserShow } from './pages/users';
+import { UserList, UserCreate, UserEdit } from './pages/users';
 import { Title } from './components/title';
-
+const apiUrl = import.meta.env.VITE_API_URL;
+const authUrl = import.meta.env.VITE_AUTH_URL;
 function App() {
   return (
     <BrowserRouter>
       <RefineKbarProvider>
         <ColorModeContextProvider>
           <AntdApp>
-            <DevtoolsProvider url={import.meta.env.VITE_API_URL}>
+            <DevtoolsProvider url={apiUrl}>
               <Refine
-                dataProvider={dataProvider(import.meta.env.VITE_API_URL)}
+                dataProvider={dataProvider(apiUrl)}
                 notificationProvider={useNotificationProvider}
                 routerProvider={routerBindings}
-                authProvider={authProvider}
+                authProvider={authProvider(authUrl)}
                 resources={[
-                  {
-                    name: 'blog_posts',
-                    list: '/blog-posts',
-                    create: '/blog-posts/create',
-                    edit: '/blog-posts/edit/:id',
-                    show: '/blog-posts/show/:id',
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
-                  {
-                    name: 'categories',
-                    list: '/categories',
-                    create: '/categories/create',
-                    edit: '/categories/edit/:id',
-                    show: '/categories/show/:id',
-                    meta: {
-                      canDelete: true,
-                    },
-                  },
                   {
                     name: 'users',
                     list: '/users',
@@ -81,6 +50,7 @@ function App() {
                     show: '/users/show/:id',
                     meta: {
                       canDelete: true,
+                      label: 'Người dùng',
                     },
                   },
                 ]}
@@ -110,25 +80,14 @@ function App() {
                   >
                     <Route
                       index
-                      element={<NavigateToResource resource="blog_posts" />}
+                      element={<NavigateToResource resource="users" />}
                     />
-                    <Route path="/blog-posts">
-                      <Route index element={<BlogPostList />} />
-                      <Route path="create" element={<BlogPostCreate />} />
-                      <Route path="edit/:id" element={<BlogPostEdit />} />
-                      <Route path="show/:id" element={<BlogPostShow />} />
-                    </Route>
-                    <Route path="/categories">
-                      <Route index element={<CategoryList />} />
-                      <Route path="create" element={<CategoryCreate />} />
-                      <Route path="edit/:id" element={<CategoryEdit />} />
-                      <Route path="show/:id" element={<CategoryShow />} />
-                    </Route>
+
                     <Route path="/users">
                       <Route index element={<UserList />} />
                       <Route path="create" element={<UserCreate />} />
                       <Route path="edit/:id" element={<UserEdit />} />
-                      <Route path="show/:id" element={<UserShow />} />
+                      {/* <Route path="show/:id" element={<UserShow />} /> */}
                     </Route>
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>

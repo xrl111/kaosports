@@ -1,29 +1,18 @@
 import { UploadOutlined } from '@ant-design/icons';
-import { Create, useForm, useSelect } from '@refinedev/antd';
-import { Button, DatePicker, Form, Input, Select, Upload } from 'antd';
+import { Create, useForm } from '@refinedev/antd';
+import { Button, Form, Input, Select, Upload } from 'antd';
 
 export const UserCreate = () => {
   const { formProps, saveButtonProps } = useForm({});
-  const { selectProps: roleSelectProps } = useSelect({
-    resource: 'roles',
-  });
+  saveButtonProps.onClick = () => {
+    console.log('saveButtonProps', saveButtonProps);
+  };
   return (
-    <Create saveButtonProps={saveButtonProps}>
+    <Create saveButtonProps={saveButtonProps} title={'Tạo người dùng'}>
       <Form {...formProps} layout="vertical">
         <Form.Item
-          label="First Name"
-          name={['firstName']}
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Last Name"
-          name={['lastName']}
+          label="Name"
+          name={['name']}
           rules={[
             {
               required: true,
@@ -41,26 +30,58 @@ export const UserCreate = () => {
             },
           ]}
         >
-          <Input />
+          <Input type="email" />
         </Form.Item>
-        <Form.Item label="Role" name={['roleId']} rules={[]}>
-          <Select {...roleSelectProps} />
+        <Form.Item
+          label="Password"
+          name={['password']}
+          rules={[
+            {
+              required: true,
+            },
+          ]}
+        >
+          <Input type="password" />
         </Form.Item>
-        <Form.Item label="Avatar" name={['avatar']} rules={[]}>
+
+        <Form.Item label="Avatar" name={['url']} rules={[]}>
           <Upload
-            customRequest={({ onSuccess }) => {
-              // Immediately call onSuccess to simulate a successful upload
-              // without actually uploading anything
-              setTimeout(() => {
-                onSuccess?.('ok');
-              }, 0);
+            beforeUpload={(file) => {
+              // Get the file name and set it as the form value
+              formProps.form?.setFieldValue('url', file.name);
+              return false; // Prevent automatic upload
             }}
+            maxCount={1}
           >
             <Button icon={<UploadOutlined />}>Upload</Button>
           </Upload>
         </Form.Item>
-        <Form.Item label="Birthday" name={['birthday']} rules={[]}>
-          <DatePicker />
+        <Form.Item label="Gender" name={['gender']} rules={[]}>
+          <Select
+            options={[
+              { label: 'Male', value: true },
+              { label: 'Female', value: false },
+            ]}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Phone"
+          name={['phone']}
+          rules={[
+            { required: true, message: 'Please input your phone number!' },
+            {
+              pattern: /^[0-9]{10,11}$/,
+              message: 'Please enter a valid phone number (10-11 digits)',
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item label="Address" name={['address']} rules={[]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="type" name={['type']} rules={[]}>
+          <Input />
         </Form.Item>
         <Form.Item label="Status" name={['status']} rules={[]}>
           <Select
@@ -69,12 +90,6 @@ export const UserCreate = () => {
               { label: 'Inactive', value: false },
             ]}
           />
-        </Form.Item>
-        <Form.Item label="Skills" name={['skills']} rules={[]}>
-          <Select mode="tags" />
-        </Form.Item>
-        <Form.Item label="Address" name={['address']} rules={[]}>
-          <Input />
         </Form.Item>
       </Form>
     </Create>

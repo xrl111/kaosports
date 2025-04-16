@@ -3,7 +3,11 @@ import { Image, Typography, Grid } from 'antd';
 
 const { useBreakpoint } = Grid;
 
-export const Title: React.FC<{ collapsed?: boolean }> = ({ collapsed }) => {
+interface TitleProps {
+  collapsed: boolean;
+}
+
+export const Title: React.FC<TitleProps> = ({ collapsed }) => {
   const navigate = useNavigate();
   const screens = useBreakpoint();
 
@@ -21,21 +25,14 @@ export const Title: React.FC<{ collapsed?: boolean }> = ({ collapsed }) => {
       }}
     >
       <Image
-        src="/logo.png"
+        src="/favicon.ico"
         alt="logo"
         preview={false}
-        width={45}
-        height={40}
+        width={35}
+        height={30}
       />
-      {!collapsed && screens.lg && (
-        <Typography.Text
-          style={{
-            fontSize: 18,
-            fontWeight: 600,
-          }}
-        >
-          KaoSports
-        </Typography.Text>
+      {!collapsed && screens.lg && screens.md && (
+        <span style={{ fontWeight: 'bold' }}>KaoSports</span>
       )}
     </div>
   );
