@@ -9,9 +9,14 @@ import { BaseRecord } from '@refinedev/core';
 
 import { Space, Table, Tag, Avatar } from 'antd';
 
-export const UserList = () => {
+interface UserListProps {
+  userType: 'users';
+}
+
+export const UserList = ({ userType }: UserListProps) => {
   const { tableProps } = useTable({
     syncWithLocation: true,
+    resource: userType,
   });
 
   return (

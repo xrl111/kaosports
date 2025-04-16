@@ -3,8 +3,13 @@ import { Edit, useForm } from '@refinedev/antd';
 import { Button, Form, Input, Select, Upload } from 'antd';
 import { useEffect } from 'react';
 
-export const UserEdit = () => {
+interface UserEditProps {
+  userType: 'users';
+}
+
+export const UserEdit = ({ userType }: UserEditProps) => {
   const { formProps, saveButtonProps, queryResult } = useForm({
+    resource: userType,
     queryOptions: {
       enabled: true,
     },
@@ -13,11 +18,9 @@ export const UserEdit = () => {
 
   const { data } = queryResult || {};
   const record = data?.data?.data;
-  console.log(record);
 
   useEffect(() => {
     if (record) {
-      // Set form values when data is loaded
       formProps.form?.setFieldsValue({
         name: record.name,
         email: record.email,

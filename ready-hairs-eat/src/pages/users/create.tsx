@@ -2,11 +2,15 @@ import { UploadOutlined } from '@ant-design/icons';
 import { Create, useForm } from '@refinedev/antd';
 import { Button, Form, Input, Select, Upload } from 'antd';
 
-export const UserCreate = () => {
-  const { formProps, saveButtonProps } = useForm({});
-  saveButtonProps.onClick = () => {
-    console.log('saveButtonProps', saveButtonProps);
-  };
+interface UserCreateProps {
+  userType: 'users';
+}
+
+export const UserCreate = ({ userType }: UserCreateProps) => {
+  const { formProps, saveButtonProps } = useForm({
+    resource: userType,
+  });
+
   return (
     <Create saveButtonProps={saveButtonProps} title={'Tạo người dùng'}>
       <Form {...formProps} layout="vertical">

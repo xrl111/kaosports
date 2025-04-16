@@ -1,6 +1,13 @@
 import { Authenticated, Refine } from '@refinedev/core';
 import { DevtoolsPanel, DevtoolsProvider } from '@refinedev/devtools';
 import { RefineKbar, RefineKbarProvider } from '@refinedev/kbar';
+import {
+  TeamOutlined,
+  UserOutlined,
+  BookOutlined,
+  TrophyOutlined,
+  DashboardOutlined,
+} from '@ant-design/icons';
 
 import {
   ErrorComponent,
@@ -26,9 +33,12 @@ import { ForgotPassword } from './pages/forgotPassword';
 import { Login } from './pages/login';
 import { Register } from './pages/register';
 import { UserList, UserCreate, UserEdit } from './pages/users';
+import { Dashboard } from './pages/dashboard/dashboard';
 import { Title } from './components/title';
+
 const apiUrl = import.meta.env.VITE_API_URL;
 const authUrl = import.meta.env.VITE_AUTH_URL;
+
 function App() {
   return (
     <BrowserRouter>
@@ -43,14 +53,30 @@ function App() {
                 authProvider={authProvider(authUrl)}
                 resources={[
                   {
-                    name: 'users',
-                    list: '/users',
-                    create: '/users/create',
-                    edit: '/users/edit/:id',
-                    show: '/users/show/:id',
+                    name: 'dashboard',
+                    list: '/',
                     meta: {
+                      label: 'Dashboard',
+                      icon: <DashboardOutlined />,
+                    },
+                  },
+                  {
+                    name: 'manager',
+                    meta: {
+                      label: 'Quản lý người dùng',
+                      icon: <TeamOutlined />,
+                    },
+                  },
+                  {
+                    name: 'users',
+                    list: '/manager/users',
+                    create: '/manager/users/create',
+                    edit: '/manager/users/edit/:id',
+                    meta: {
+                      parent: 'manager',
+                      label: 'Nội bộ',
                       canDelete: true,
-                      label: 'Người dùng',
+                      icon: <UserOutlined />,
                     },
                   },
                 ]}
@@ -78,17 +104,19 @@ function App() {
                       </Authenticated>
                     }
                   >
-                    <Route
-                      index
-                      element={<NavigateToResource resource="users" />}
-                    />
-
-                    <Route path="/users">
-                      <Route index element={<UserList />} />
-                      <Route path="create" element={<UserCreate />} />
-                      <Route path="edit/:id" element={<UserEdit />} />
-                      {/* <Route path="show/:id" element={<UserShow />} /> */}
+                    <Route index element={<Dashboard />} />
+                    <Route path="/manager/users">
+                      <Route index element={<UserList userType="users" />} />
+                      <Route
+                        path="create"
+                        element={<UserCreate userType="users" />}
+                      />
+                      <Route
+                        path="edit/:id"
+                        element={<UserEdit userType="users" />}
+                      />
                     </Route>
+
                     <Route path="*" element={<ErrorComponent />} />
                   </Route>
                   <Route
