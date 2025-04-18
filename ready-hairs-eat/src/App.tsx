@@ -4,8 +4,6 @@ import { RefineKbar, RefineKbarProvider } from '@refinedev/kbar';
 import {
   TeamOutlined,
   UserOutlined,
-  BookOutlined,
-  TrophyOutlined,
   DashboardOutlined,
 } from '@ant-design/icons';
 
@@ -106,7 +104,7 @@ function App() {
                   >
                     <Route index element={<Dashboard />} />
                     <Route path="/manager/users">
-                      <Route index element={<UserList userType="users" />} />
+                      <Route index element={<UserList />} />
                       <Route
                         path="create"
                         element={<UserCreate userType="users" />}

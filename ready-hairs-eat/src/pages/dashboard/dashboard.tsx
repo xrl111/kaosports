@@ -7,6 +7,7 @@ import {
   BookOutlined,
 } from '@ant-design/icons';
 import { DataResponse, IUser, ListResponse } from '../../interfaces';
+
 export const Dashboard = () => {
   const { data: usersData } = useList<ListResponse<IUser>>({
     resource: 'users',
