@@ -29,15 +29,15 @@ export const dataProvider = (
     const queryFilters = generateFilter(filters);
 
     const query: {
-      _start?: number;
-      _end?: number;
+      select?: number;
+      skip?: number;
       _sort?: string;
       _order?: string;
     } = {};
 
     if (mode === 'server') {
-      query._start = (current - 1) * pageSize;
-      query._end = current * pageSize;
+      query.skip = (current - 1) * pageSize;
+      query.select = current * pageSize;
     }
 
     const generatedSort = generateSort(sorters);

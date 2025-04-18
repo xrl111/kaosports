@@ -65,9 +65,9 @@ export const authProvider = (
   apiUrl: string,
   httpClient: AxiosInstance = axiosInstance
 ): Omit<Required<AuthProvider>, 'getPermissions'> => ({
-  login: async ({ email, password }) => {
+  login: async ({ username, password }) => {
     const response = await httpClient.post(`${apiUrl}/login`, {
-      email,
+      username,
       password,
       type: 'string',
     });

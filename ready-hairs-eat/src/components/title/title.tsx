@@ -5,9 +5,13 @@ const { useBreakpoint } = Grid;
 
 interface TitleProps {
   collapsed: boolean;
+  clickable?: boolean;
 }
 
-export const Title: React.FC<TitleProps> = ({ collapsed }) => {
+export const Title: React.FC<TitleProps> = ({
+  collapsed,
+  clickable = true,
+}) => {
   const navigate = useNavigate();
   const screens = useBreakpoint();
 
@@ -17,11 +21,13 @@ export const Title: React.FC<TitleProps> = ({ collapsed }) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        cursor: 'pointer',
+        cursor: clickable ? 'pointer' : 'default',
         gap: 10,
       }}
       onClick={() => {
-        navigate('/');
+        if (clickable) {
+          navigate('/');
+        }
       }}
     >
       <Image

@@ -6,54 +6,76 @@ import {
   TrophyOutlined,
   BookOutlined,
 } from '@ant-design/icons';
-
+import { DataResponse, IUser, ListResponse } from '../../interfaces';
 export const Dashboard = () => {
-  const { data: usersData } = useList({
+  const { data: usersData } = useList<ListResponse<IUser>>({
     resource: 'users',
   });
 
-  const totalUsers = usersData?.total || 0;
+  const users = usersData?.data?.result || [];
+
+  const total = {
+    totalUsers: usersData?.data?.totalCount || 0,
+    totalManagers:
+      users.filter((user: IUser) => user.role === 'manager').length || 0,
+    totalAdmins:
+      users.filter((user: IUser) => user.role === 'admin').length || 0,
+    totalCoaches:
+      users.filter((user: IUser) => user.role === 'coach').length || 0,
+    totalStudents:
+      users.filter((user: IUser) => user.role === 'student').length || 0,
+  };
 
   return (
     <div style={{ padding: '24px' }}>
-      <Row gutter={[16, 16]}>
-        <Col xs={24} sm={12} md={6}>
+      <Row gutter={[16, 16]} justify="center">
+        <Col xs={24} sm={12} md={8} lg={4.8}>
           <Card>
             <Statistic
               title="Total Users"
-              value={totalUsers}
+              value={total.totalUsers}
               prefix={<UserOutlined />}
               valueStyle={{ color: '#3f8600' }}
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} md={6}>
+        <Col xs={24} sm={12} md={8} lg={4.8}>
           <Card>
             <Statistic
-              title="Internal Staff"
-              value={totalUsers}
+              title="Admins"
+              value={total.totalAdmins}
               prefix={<TeamOutlined />}
               valueStyle={{ color: '#1890ff' }}
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} md={6}>
+        <Col xs={24} sm={12} md={8} lg={4.8}>
           <Card>
             <Statistic
-              title="Coaches"
-              value={0}
-              prefix={<TrophyOutlined />}
+              title="Managers"
+              value={total.totalManagers}
+              prefix={<TeamOutlined />}
               valueStyle={{ color: '#722ed1' }}
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} md={6}>
+        <Col xs={24} sm={12} md={8} lg={4.8}>
+          <Card>
+            <Statistic
+              title="Coaches"
+              value={total.totalCoaches}
+              prefix={<TrophyOutlined />}
+              valueStyle={{ color: '#faad14' }}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} md={8} lg={4.8}>
           <Card>
             <Statistic
               title="Students"
-              value={0}
+              value={total.totalStudents}
               prefix={<BookOutlined />}
-              valueStyle={{ color: '#faad14' }}
+              valueStyle={{ color: '#ff4d4f' }}
             />
           </Card>
         </Col>

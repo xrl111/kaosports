@@ -2,12 +2,9 @@ import { UploadOutlined } from '@ant-design/icons';
 import { Edit, useForm } from '@refinedev/antd';
 import { Button, Form, Input, Select, Upload } from 'antd';
 import { useEffect } from 'react';
+import { UserProps } from '../../interfaces';
 
-interface UserEditProps {
-  userType: 'users';
-}
-
-export const UserEdit = ({ userType }: UserEditProps) => {
+export const UserEdit = ({ userType }: UserProps) => {
   const { formProps, saveButtonProps, queryResult } = useForm({
     resource: userType,
     queryOptions: {

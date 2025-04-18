@@ -6,25 +6,26 @@ import {
   useTable,
 } from '@refinedev/antd';
 import { BaseRecord } from '@refinedev/core';
-
+import { IUser, ListResponse } from '../../interfaces';
 import { Space, Table, Tag, Avatar } from 'antd';
 
-interface UserListProps {
-  userType: 'users';
-}
-
-export const UserList = ({ userType }: UserListProps) => {
-  const { tableProps } = useTable({
+export const UserList = () => {
+  const { tableProps } = useTable<ListResponse<IUser>>({
     syncWithLocation: true,
-    resource: userType,
+    resource: 'users',
   });
+  const users = tableProps?.dataSource?.result || [];
+  const newTableProps = {
+    ...tableProps,
+    dataSource: users,
+  };
 
   return (
     <List title={'Người dùng'}>
-      <Table {...tableProps} rowKey="id">
+      <Table {...newTableProps} rowKey="id">
         <Table.Column dataIndex="id" title={'ID'} />
         <Table.Column
-          dataIndex="name"
+          dataIndex={'username'}
           title={'Name'}
           render={(_, record: BaseRecord) => (
             <Space>
@@ -39,7 +40,6 @@ export const UserList = ({ userType }: UserListProps) => {
         />
         <Table.Column dataIndex="email" title={'Email'} />
         <Table.Column dataIndex="address" title={'Address'} />
-        <Table.Column dataIndex="phone" title={'Phone'} />
         <Table.Column
           dataIndex="status"
           title={'Status'}
